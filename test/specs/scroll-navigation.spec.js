@@ -74,18 +74,17 @@ test.describe('Back Navigation', () => {
   test('back from every view returns to pre-screen', async ({ panelPage }) => {
     const views = [
       { name: 'Alt Text', btn: SEL.btnAltText },
-      { name: 'Contrast', btn: SEL.btnContrast },
       { name: 'Form Labels', btn: SEL.btnFormLabels },
       { name: 'Headings', btn: SEL.btnHeadings },
       { name: 'Landmarks', btn: SEL.btnLandmarks },
       { name: 'ARIA Validation', btn: SEL.btnAriaValidation },
       { name: 'Acc Names', btn: SEL.btnAccNames },
-      { name: 'Touch Targets', btn: SEL.btnTouch },
       { name: 'Auto Keyboard', btn: SEL.btnAutoKey },
       { name: 'Focus Mgmt', btn: SEL.btnFocusMgmt },
       { name: 'Live Regions', btn: SEL.btnLiveRegions },
       { name: 'Reading Order', btn: SEL.btnReadingOrder },
       { name: 'SR Walkthrough', btn: SEL.btnSrWalkthrough },
+      // Contrast, Touch Targets excluded — Visual section temporarily hidden from pre-screen UI
     ];
 
     for (const view of views) {
@@ -99,7 +98,7 @@ test.describe('Back Navigation', () => {
 
   test('rapid back/forward navigation does not break the panel', async ({ panelPage }) => {
     // Quick cycling through views
-    await navigateToView(panelPage, SEL.btnContrast);
+    await navigateToView(panelPage, SEL.btnLandmarks);
     await goBack(panelPage);
     await navigateToView(panelPage, SEL.btnAltText);
     await goBack(panelPage);

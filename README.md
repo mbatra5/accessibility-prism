@@ -1,6 +1,6 @@
 # Accessibility Prism
 
-**Current version: v3.0.0** | [Changelog](#changelog)
+**Current version: v3.0.1** | [Changelog](#changelog)
 
 A comprehensive, all-in-one accessibility testing Chrome extension that goes far beyond automated scanning. Accessibility Prism combines axe-core engine analysis with manual testing tools, visual overlays, and plain-English scored reports — giving developers, QA engineers, and accessibility specialists everything they need in a single panel.
 
@@ -84,7 +84,7 @@ npm run build
 Then in Edge/Chrome:
 1. Open `edge://extensions/` (or `chrome://extensions/`)
 2. Enable **Developer mode**
-3. Click **Load unpacked** → select the **project root** (not `dist/`)
+3. Click **Load unpacked** → select the **`dist/`** folder (this is where `npm run build` outputs `manifest.json`, `background.js`, `content.js`, `panel.js`, `panel.html`, and `icons/`)
 
 ## Usage
 
@@ -162,6 +162,16 @@ public/
 No data collection. All analysis runs locally in the browser tab. No external requests.
 
 ## Changelog
+
+### Unreleased
+
+### v3.0.1
+- **Axe Scan now matches plain axe-core / axe DevTools exactly** — `runAxe()` in `src/core/axe-runner.ts` no longer passes a custom `runOnly` tag filter. Previously, an explicit tag list (including `wcag2aaa`/`wcag22aa`) inadvertently force-re-enabled several rules axe-core intentionally disables by default (`target-size`, `color-contrast-enhanced`, `duplicate-id`, `duplicate-id-active`, `aria-roledescription`, `audio-caption`, `identical-links-same-purpose`, `meta-refresh-no-exceptions`) — per axe-core's documented behavior, tag-based `runOnly` ignores each rule's own `enabled` flag. This produced noisier, less accurate results than a standard axe scan. Removing the custom `runOnly` restores axe-core's true default rule set (96 of 104 rules), 1:1 parity with axe DevTools. Also removed the `isBestPractice()` reclassification in `mapResult()` — `best-practice`-tagged rules (e.g. `heading-order`, `page-has-heading-one`, `landmark-one-main`) are no longer demoted into a separate `'best-practice'` resultType; axe-core treats them as real violations/needs-review, and Prism now does too. `'prism-custom'` rules remain disabled (`registerPrismRules()` still commented out) since those are Prism's own unvalidated custom heuristics, not part of axe-core. Regenerated the `axe-results` visual snapshot to reflect the corrected rule set.
+- **Best Practice / Experimental result types disabled (temporary)** — `runAxe()` in `src/core/axe-runner.ts` no longer runs the `best-practice` tag or the 10 Prism custom rules (`prism-custom` tag, `registerPrismRules()` call) — flagged as producing inaccurate results. The corresponding filter chips in `axe-issue-list.ts` are hidden. All custom rule source files (`core/custom-rules/*.ts`) are untouched; re-enable by uncommenting the `registerPrismRules()` call, the `'best-practice'`/`'prism-custom'` tags in the `runOnly.values` array, and the two chip lines in `axe-issue-list.ts`. Regenerated `axe-results` visual snapshot to reflect the removed chips.
+- **Visual section hidden from UI (temporary)** — Commented out the "Visual" section (Color Contrast, Touch Target Size buttons) in `src/ui/views/pre-screen.ts`. Underlying code (`contrast-analysis.ts`, `touch-target-analysis.ts`, their result views, and `onRunContrast`/`onRunTouchTargets` handlers/routing in `panel.ts`) is untouched — only the pre-screen entry buttons are disabled. To re-enable, uncomment the `Visual` section block in `pre-screen.ts`. Updated/skipped corresponding Playwright tests: `visual-audits.spec.js` (`Contrast Audit` + `Touch Target Audit` describe blocks skipped), `visual-snapshots.spec.js` (contrast/touch snapshot tests skipped), `panel-lifecycle.spec.js` (button-presence list updated), `scroll-navigation.spec.js` and `card-expand.spec.js` (swapped Contrast/Touch references for other still-active views in shared navigation tests).
+- **Accessibility Scorecard hidden from UI (temporary)** — Commented out the Scorecard button in `src/ui/views/pre-screen.ts` so it no longer appears on the pre-screen menu. All underlying code (`onRunScorecard` handler, `scorecard.ts` engine, `scorecard-results.ts` view, routing in `panel.ts`) is untouched and fully functional — only the entry-point button is disabled. To re-enable, uncomment the `renderButton({ id: 'btn-scorecard', ... })` block in `pre-screen.ts`. Corresponding Playwright tests (`advanced-features.spec.js` Scorecard suite, `visual-snapshots.spec.js` scorecard snapshot, `a11y-ception.spec.js` scorecard a11y check) were marked `.skip()` with a note to re-enable alongside the button; `panel-lifecycle.spec.js` button-presence list updated to exclude `btnScorecard`. Regenerated the `pre-screen` visual snapshot to reflect the removed button.
+- **Docs fix: "Load unpacked" instructions corrected** — README and AGENTS.md incorrectly said to select the project root when loading the unpacked extension in Chrome/Edge. `manifest.json` only exists in `dist/` after `npm run build` (copied there from `public/` by Vite), so selecting the root caused "Manifest file is missing or unreadable". Both docs now correctly point to `dist/`.
+- **Footer attribution (temporary)** — Panel footer credit changed from "Built by Madhur & Alisha" to "Built by Alisha" in `src/ui/views/pre-screen.ts`. Updated `test/specs/panel-lifecycle.spec.js` assertion accordingly and regenerated the `pre-screen` visual regression snapshot to match.
 
 ### v3.0.0
 - **Detached popup window architecture** — Panel moved from an injected `<div>` into a standalone `chrome.windows.create({ type: 'popup' })` window. Eliminates all host-page CSS conflicts and enables testing at any viewport size including responsive/mobile. The popup connects directly to the content script via `chrome.tabs.connect(tabId)` using a typed message protocol

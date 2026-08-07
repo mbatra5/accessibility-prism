@@ -1,6 +1,6 @@
 # Accessibility Prism — Agent Handoff Documentation
 
-**Version:** 3.0.0  
+**Version:** 3.0.1  
 **Type:** Chrome Extension (detached popup window)  
 **Stack:** TypeScript, Vite, axe-core, Playwright
 
@@ -303,7 +303,7 @@ npm run test:report    # Open HTML test report
 ### Loading the Extension
 
 1. `npm run build`
-2. Open `chrome://extensions` → Enable Developer mode → Load unpacked → select project root
+2. Open `chrome://extensions` → Enable Developer mode → Load unpacked → select the `dist/` folder (contains `manifest.json` after build, copied there from `public/`)
 3. Click the Prism icon in the browser toolbar → popup window opens
 
 ### Local Testing (Standalone / Playwright fixture mode)

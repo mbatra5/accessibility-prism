@@ -1,6 +1,8 @@
 import { test, expect, SEL, navigateToView, goBack, expandFirstCard } from '../fixtures/panel.js';
 
-test.describe('Contrast Audit', () => {
+// Visual section (Contrast, Touch Target) temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+// Re-enable these describe blocks once the buttons are restored.
+test.describe.skip('Contrast Audit', () => {
   test('detects contrast issues on bad-contrast text', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnContrast);
     const cards = panelPage.locator(SEL.issueCard);
@@ -83,7 +85,7 @@ test.describe('Alt Text Audit', () => {
   });
 });
 
-test.describe('Touch Target Audit', () => {
+test.describe.skip('Touch Target Audit', () => {
   test('detects undersized touch targets', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnTouch);
     // The test page has 20x20 buttons — should flag them

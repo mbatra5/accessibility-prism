@@ -15,10 +15,12 @@ test.describe('Panel Lifecycle', () => {
   test('panel shows pre-screen with all audit buttons', async ({ panelPage }) => {
     const buttons = [
       SEL.btnAxe, SEL.btnHeadings, SEL.btnLandmarks,
-      SEL.btnContrast, SEL.btnAltText, SEL.btnFormLabels,
-      SEL.btnAccNames, SEL.btnAriaValidation, SEL.btnTouch,
+      SEL.btnAltText, SEL.btnFormLabels,
+      SEL.btnAccNames, SEL.btnAriaValidation,
       SEL.btnAutoKey, SEL.btnFocusMgmt, SEL.btnLiveRegions,
-      SEL.btnReadingOrder, SEL.btnSrWalkthrough, SEL.btnScorecard,
+      SEL.btnReadingOrder, SEL.btnSrWalkthrough,
+      // SEL.btnContrast, SEL.btnTouch, // Visual section temporarily hidden from pre-screen UI (see pre-screen.ts)
+      // SEL.btnScorecard, // Scorecard button temporarily hidden from pre-screen UI (see pre-screen.ts)
     ];
     for (const btn of buttons) {
       await expect(panelPage.locator(btn)).toBeAttached();
@@ -58,7 +60,7 @@ test.describe('Panel Lifecycle', () => {
 
   test('footer displays version and attribution', async ({ panelPage }) => {
     const footer = await panelPage.textContent(SEL.panel);
-    expect(footer).toContain('v3.0.0');
-    expect(footer).toContain('Madhur Batra');
+    expect(footer).toContain('v3.0.1');
+    expect(footer).toContain('Alisha');
   });
 });

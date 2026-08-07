@@ -29,7 +29,8 @@ test.describe('Visual Regression Snapshots', () => {
   });
 
   // ── Scorecard ───────────────────────────────────────────────────────────
-  test('scorecard visualization snapshot', async ({ panelPage }) => {
+  // Scorecard button temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+  test.skip('scorecard visualization snapshot', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnScorecard, { timeout: 30_000 });
     await panelPage.waitForSelector(`${SEL.panel} .cat-card`, { timeout: 15_000 });
     await panelPage.waitForTimeout(1500);
@@ -54,7 +55,8 @@ test.describe('Visual Regression Snapshots', () => {
   });
 
   // ── Contrast ────────────────────────────────────────────────────────────
-  test('contrast results snapshot', async ({ panelPage }) => {
+  // Contrast button temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+  test.skip('contrast results snapshot', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnContrast);
     await panelPage.waitForTimeout(500);
     const panel = panelPage.locator(SEL.panel);
@@ -110,7 +112,8 @@ test.describe('Visual Regression Snapshots', () => {
   });
 
   // ── Touch targets ──────────────────────────────────────────────────────
-  test('touch targets results snapshot', async ({ panelPage }) => {
+  // Touch Target button temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+  test.skip('touch targets results snapshot', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnTouch);
     await panelPage.waitForTimeout(500);
     const panel = panelPage.locator(SEL.panel);

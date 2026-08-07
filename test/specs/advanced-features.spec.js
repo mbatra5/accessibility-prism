@@ -185,7 +185,9 @@ test.describe('Live Regions', () => {
   });
 });
 
-test.describe('Scorecard', () => {
+test.describe.skip('Scorecard', () => {
+  // Scorecard button is temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+  // Underlying scorecard code/view is untouched — re-enable these tests once the button is restored.
   test('renders scorecard with category cards', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnScorecard, { timeout: 30_000 });
     const catCards = panelPage.locator(`${SEL.panel} .cat-card`);

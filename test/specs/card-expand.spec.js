@@ -30,7 +30,8 @@ test.describe('Card Expand / Collapse', () => {
     expect(after).toBe('block');
   });
 
-  test('contrast cards expand and collapse', async ({ panelPage }) => {
+  // Contrast section temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+  test.skip('contrast cards expand and collapse', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnContrast);
     const count = await panelPage.locator(SEL.issueCard).count();
     test.skip(count === 0, 'No contrast issues on test page');
@@ -107,8 +108,8 @@ test.describe('Card Expand / Collapse', () => {
   });
 
   test('[regression] expand works after visiting three views in sequence', async ({ panelPage }) => {
-    // Contrast → back → Alt text → back → Form labels
-    await navigateToView(panelPage, SEL.btnContrast);
+    // Landmarks → back → Alt text → back → Form labels
+    await navigateToView(panelPage, SEL.btnLandmarks);
     await goBack(panelPage);
     await navigateToView(panelPage, SEL.btnAltText);
     await goBack(panelPage);
