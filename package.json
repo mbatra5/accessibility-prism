@@ -1,7 +1,7 @@
 {
   "name": "accessibility-prism",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,7 +15,7 @@
     "test:headed": "npx playwright test --headed",
     "test:report": "npx playwright show-report test/report",
     "icons": "node scripts/generate-icons.js",
-    "zip": "npm run build && cd dist && zip -r ../accessibility-prism-v3.0.0.zip . -x \"*.DS_Store\""
+    "zip": "npm run build && cd dist && zip -r ../accessibility-prism-v3.0.1.zip . -x \"*.DS_Store\""
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

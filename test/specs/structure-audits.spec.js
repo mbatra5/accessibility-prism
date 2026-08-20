@@ -32,6 +32,28 @@ test.describe('Heading Analysis', () => {
     await goBack(panelPage);
     await expect(panelPage.locator(SEL.btnHeadings)).toBeVisible();
   });
+
+  test('flags a truly empty heading as empty-heading', async ({ panelPage }) => {
+    await navigateToView(panelPage, SEL.btnHeadings);
+    const content = await panelPage.textContent(SEL.panel);
+    expect(content).toMatch(/empty.*heading/i);
+  });
+
+  test('does NOT flag a heading with only an aria-label as empty (accessible name check)', async ({ panelPage }) => {
+    await navigateToView(panelPage, SEL.btnHeadings);
+    // The aria-label-heading fixture has a real accessible name ("Aria Labelled Heading")
+    // via aria-label despite empty textContent — it must not appear as an empty-heading issue.
+    const cards = panelPage.locator(SEL.issueCard);
+    const count = await cards.count();
+    let flaggedAriaLabelHeading = false;
+    for (let i = 0; i < count; i++) {
+      const text = await cards.nth(i).textContent();
+      if (/empty/i.test(text || '') && /aria.label.heading|Aria Labelled Heading/i.test(text || '')) {
+        flaggedAriaLabelHeading = true;
+      }
+    }
+    expect(flaggedAriaLabelHeading).toBe(false);
+  });
 });
 
 test.describe('Landmark Analysis', () => {

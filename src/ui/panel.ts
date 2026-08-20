@@ -105,7 +105,7 @@ export class FloatingPanel {
   private searchQuery = '';
   private filterSeverity: 'ALL' | 'AA' | 'AAA' = 'ALL';
   private groupMode: GroupMode = 'rule';
-  private activeResultTypes = new Set<import('../core/types').AxeResultType>(['violation', 'needs-review', 'best-practice']);
+  private activeResultTypes = new Set<import('../core/types').AxeResultType>(['violation', 'best-practice']);
   private filterImpact = new Set<string>(['critical', 'serious', 'moderate', 'minor']);
   private activeViolation: AxeViolation | null = null;
 

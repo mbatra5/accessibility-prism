@@ -44,7 +44,8 @@ test.describe('Accessibility Prism — A11y-ception', () => {
     expect(violations.length).toBe(0);
   });
 
-  test('scorecard view is accessible', async ({ panelPage }) => {
+  // Scorecard button temporarily hidden from pre-screen UI (see src/ui/views/pre-screen.ts).
+  test.skip('scorecard view is accessible', async ({ panelPage }) => {
     await navigateToView(panelPage, SEL.btnScorecard, { timeout: 30_000 });
     
     await panelPage.waitForSelector(`${SEL.panel} #scroll-area`, { timeout: 15_000 });

@@ -94,6 +94,11 @@ test.describe('Axe Full Page Scan', () => {
       const banner = panelPage.locator(`${SEL.panel} #btn-clear-scope`);
       await expect(banner).toBeVisible({ timeout: 25000 });
       
+      // "Needs Review" is no longer active by default (see panel.ts activeResultTypes) —
+      // re-enable it here since the scoped element's only findings may be needs-review.
+      const reviewChip = panelPage.locator(`${SEL.panel} .result-type-chip[data-type="needs-review"]`);
+      if (await reviewChip.count()) await reviewChip.click();
+
       // Should show results (rule cards in default "By Rule" mode, or issue cards)
       const ruleCards = panelPage.locator(SEL.ruleCard);
       const issueCards = panelPage.locator(SEL.issueCard);

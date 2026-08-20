@@ -1,4 +1,5 @@
 import type { HeadingNode, HeadingIssue, HeadingAnalysisResult } from './types';
+import { computeAccessibleName as w3cName } from 'dom-accessibility-api';
 
 function isVisible(el: Element): boolean {
   const cs = window.getComputedStyle(el);
@@ -13,6 +14,16 @@ function isExtension(el: Element): boolean {
   return !!el.closest('#a11y-analyzer-panel') || !!el.closest('#a11y-analyzer-overlay');
 }
 
+/** Computes the real accessible name per the W3C accname spec — accounts for
+ * aria-label, aria-labelledby, and img[alt] content, not just visible text. */
+function computeAccessibleName(el: Element): string {
+  try {
+    return w3cName(el).trim();
+  } catch {
+    return (el.textContent || '').trim();
+  }
+}
+
 export function analyzeHeadings(root?: Element | Document): HeadingAnalysisResult {
   const allHeadings = Array.from((root ?? document).querySelectorAll('h1, h2, h3, h4, h5, h6'))
     .filter(el => !isExtension(el) && isVisible(el));
@@ -21,6 +32,7 @@ export function analyzeHeadings(root?: Element | Document): HeadingAnalysisResul
     element: el,
     level: parseInt(el.tagName[1], 10),
     text: el.textContent?.trim() || '',
+    accessibleName: computeAccessibleName(el),
   }));
 
   const issues: HeadingIssue[] = [];
@@ -45,7 +57,7 @@ export function analyzeHeadings(root?: Element | Document): HeadingAnalysisResul
   }
 
   headings.forEach(h => {
-    if (!h.text) {
+    if (!h.accessibleName) {
       issues.push({
         type: 'empty-heading',
         severity: 'warning',

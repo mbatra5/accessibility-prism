@@ -128,6 +128,9 @@ export interface HeadingNode {
   element: Element;
   level: number;
   text: string;
+  /** Full accessible name (per W3C accname computation) — accounts for aria-label,
+   * aria-labelledby, and img alt text, unlike `text` which is raw visible textContent. */
+  accessibleName: string;
 }
 
 export type HeadingIssueType = 'missing-h1' | 'multiple-h1' | 'skipped-level' | 'empty-heading';

@@ -37,6 +37,13 @@
       <!-- Skipped heading level: H2 → H4 -->
       <h4>Skipped Heading Level</h4>
 
+      <!-- Truly empty heading — should be flagged as empty-heading -->
+      <h3 class="truly-empty-heading"></h3>
+
+      <!-- Heading with only an aria-label, no visible text — should NOT be flagged as empty
+           (has a real accessible name via aria-label, unlike raw textContent) -->
+      <h3 aria-label="Aria Labelled Heading" class="aria-label-heading"></h3>
+
       <!-- Group of similar components (Cards) to test component detection -->
       <section aria-label="Products">
         <div class="card">

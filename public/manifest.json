@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Accessibility Prism",
-  "version": "3.0.0",
-  "description": "All-in-one accessibility testing: axe scanning, 10 custom rules, keyboard & ARIA analysis, screen reader simulation, and more.",
+  "version": "3.0.1",
+  "description": "All-in-one accessibility testing: axe scanning, keyboard & ARIA analysis, screen reader simulation, and visual overlays.",
   "permissions": ["activeTab", "scripting", "tabs", "windows"],
   "icons": {
     "16": "icons/icon-16.png",

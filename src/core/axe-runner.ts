@@ -1,6 +1,8 @@
 import axe from 'axe-core';
 import type { AxeViolation, AxeCheckResult, AxeResultType } from './types';
-import { registerPrismRules, isPrismRule } from './custom-rules/index';
+import { isPrismRule } from './custom-rules/index';
+// NOTE: registerPrismRules import removed while Prism custom rules are temporarily disabled (see runAxe below).
+// Restore `import { registerPrismRules, isPrismRule } from './custom-rules/index';` when re-enabling.
 
 function mapChecks(checks: any[]): AxeCheckResult[] {
   if (!checks || !Array.isArray(checks)) return [];
@@ -17,6 +19,12 @@ function isInsideExtension(el: Element | null): boolean {
   return !!el.closest('#a11y-analyzer-panel') || !!el.closest('#a11y-analyzer-overlay');
 }
 
+// `best-practice` is an axe-core categorization tag for rules with no WCAG success-criterion
+// tag attached — i.e. recommended good practice, not a legal/conformance requirement. axe-core
+// and axe DevTools still bucket these under plain violations/needs-review at the API level, but
+// Prism deliberately re-surfaces them as a distinct 'best-practice' resultType so users can tell
+// "must fix for WCAG/EAA conformance" apart from "good to have, not required." This was briefly
+// removed (to chase 1:1 axe DevTools parity) but caused confusion — see AGENTS.md/README changelog.
 function isBestPractice(tags: string[]): boolean {
   return tags.includes('best-practice');
 }
@@ -69,7 +77,9 @@ function mapResult(item: any, resultType: AxeResultType): AxeViolation | null {
 
 export async function runAxe(root?: Element): Promise<AxeViolation[]> {
   try {
-    registerPrismRules();
+    // TEMPORARILY DISABLED — Prism custom rules (registerPrismRules) produce the "experimental"
+    // result-type bucket, which was flagged as inaccurate. Uncomment to re-enable.
+    // registerPrismRules();
 
     const context: any = root
       ? { include: [root], exclude: ['#a11y-analyzer-panel', '#a11y-analyzer-overlay'] }
@@ -77,16 +87,17 @@ export async function runAxe(root?: Element): Promise<AxeViolation[]> {
 
     const results = await axe.run(context, {
       resultTypes: ['violations', 'incomplete'],
-      runOnly: {
-        type: 'tag',
-        values: [
-          'wcag2a', 'wcag2aa', 'wcag2aaa',
-          'wcag21a', 'wcag21aa',
-          'wcag22aa',
-          'best-practice',
-          'prism-custom',
-        ],
-      },
+      // No `runOnly` filter — this intentionally matches plain axe-core / axe DevTools behavior:
+      // axe runs its own default-enabled rule set (wcag2a, wcag2aa, wcag21a, wcag21aa, best-practice,
+      // axe's own 'experimental' rules) and respects the ~8 rules axe-core disables by default
+      // (target-size, color-contrast-enhanced, duplicate-id, duplicate-id-active,
+      // aria-roledescription, audio-caption, identical-links-same-purpose, meta-refresh-no-exceptions).
+      // Previously, an explicit tag-based runOnly (including wcag2aaa/wcag22aa) force-re-enabled
+      // several of those intentionally-disabled rules — producing more noise than a standard axe
+      // scan and confusing results. Dropping runOnly restores 1:1 parity with a plain axe.run().
+      //
+      // 'prism-custom' rules are still excluded — registerPrismRules() above remains commented out,
+      // so Prism's own custom rules never register with axe-core regardless of this config.
     });
 
     const out: AxeViolation[] = [];

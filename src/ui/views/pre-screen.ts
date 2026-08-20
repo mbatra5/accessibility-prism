@@ -32,13 +32,15 @@ export function renderPreScreen(): string {
   html += `<div id="scroll-area" tabindex="0" style="padding: 16px !important; display: flex !important; flex-direction: column !important; gap: 6px !important; background: #F9FAFB !important; overflow-y: auto !important; flex: 1 !important;">`;
 
   // --- Full Scorecard ---
-  html += renderButton({
-    id: 'btn-scorecard', label: 'Accessibility Scorecard', description: 'Run all checks, get a scored report with plain-English findings',
-    iconBg: '#1E293B', iconStroke: '#FFFFFF', hoverColor: '#2563EB',
-    icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>',
-  });
-
-  html += `<div style="height: 6px !important;"></div>`;
+  // TEMPORARILY DISABLED IN UI — uncomment to re-enable the Scorecard button on pre-screen.
+  // (onRunScorecard handler + scorecard view/routing logic left untouched elsewhere.)
+  // html += renderButton({
+  //   id: 'btn-scorecard', label: 'Accessibility Scorecard', description: 'Run all checks, get a scored report with plain-English findings',
+  //   iconBg: '#1E293B', iconStroke: '#FFFFFF', hoverColor: '#2563EB',
+  //   icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>',
+  // });
+  //
+  // html += `<div style="height: 6px !important;"></div>`;
 
   // --- WCAG Violations ---
   html += `<div style="${SECTION_STYLE}">WCAG Violations</div>`;
@@ -72,17 +74,18 @@ export function renderPreScreen(): string {
   });
 
   // --- Visual ---
-  html += `<div style="${SECTION_STYLE} margin-top: 10px;">Visual</div>`;
-  html += renderButton({
-    id: 'btn-contrast', label: 'Color Contrast', description: 'Check text contrast ratios against WCAG AA/AAA',
-    iconBg: '#F5F3FF', iconStroke: '#7C3AED', hoverColor: '#7C3AED',
-    icon: '<circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z"></path>',
-  });
-  html += renderButton({
-    id: 'btn-touch', label: 'Touch Target Size', description: 'Measure interactive elements against WCAG 2.5.5/2.5.8',
-    iconBg: '#FEF2F2', iconStroke: '#EF4444', hoverColor: '#EF4444',
-    icon: '<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>',
-  });
+  // TEMPORARILY DISABLED IN UI — uncomment to re-enable the Visual section (Color Contrast, Touch Target Size).
+  // html += `<div style="${SECTION_STYLE} margin-top: 10px;">Visual</div>`;
+  // html += renderButton({
+  //   id: 'btn-contrast', label: 'Color Contrast', description: 'Check text contrast ratios against WCAG AA/AAA',
+  //   iconBg: '#F5F3FF', iconStroke: '#7C3AED', hoverColor: '#7C3AED',
+  //   icon: '<circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20z"></path>',
+  // });
+  // html += renderButton({
+  //   id: 'btn-touch', label: 'Touch Target Size', description: 'Measure interactive elements against WCAG 2.5.5/2.5.8',
+  //   iconBg: '#FEF2F2', iconStroke: '#EF4444', hoverColor: '#EF4444',
+  //   icon: '<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>',
+  // });
 
   // --- Keyboard & Focus ---
   html += `<div style="${SECTION_STYLE} margin-top: 10px;">Keyboard &amp; Focus</div>`;
@@ -147,11 +150,11 @@ export function renderPreScreen(): string {
 
   html += `
     <div style="padding: 10px 16px !important; border-top: 1px solid #E5E7EB !important; background: #F9FAFB !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important; flex-shrink: 0 !important;">
-      <span style="font-size: 11px !important; color: #6B7280 !important; line-height: 1.5 !important;">v3.0.0</span>
+      <span style="font-size: 11px !important; color: #6B7280 !important; line-height: 1.5 !important;">v3.0.1</span>
       <span style="color: #9CA3AF !important;">·</span>
       <span style="font-size: 11px !important; color: #6B7280 !important; line-height: 1.5 !important;">Powered by axe-core + Prism Rules</span>
       <span style="color: #9CA3AF !important;">·</span>
-      <span style="font-size: 11px !important; color: #6B7280 !important; line-height: 1.5 !important;">Built by Madhur & Alisha</span>
+      <span style="font-size: 11px !important; color: #6B7280 !important; line-height: 1.5 !important;">Built by Alisha</span>
     </div>
   `;
 
